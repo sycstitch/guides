@@ -4,21 +4,67 @@ This guide outlines the complete process from starting a new task to seeing it l
 
 ---
 
-### 0. One-Time Setup: Fork the Repo
+### 0. One-Time Setup: Fork the Repo (Initializing Your Local Environment)
+
+This section covers two common starting points: cloning your fork for the first time, or adapting an existing local clone of the original repository to work with your fork.
 
 - Go to the original repo on GitHub and click **Fork**.
-- Clone your fork to your machine:
-  ```bash
-  git clone [https://github.com/](https://github.com/)<your-username>/<repo-name>.git
-  cd <repo-name>
-  ```
-- Add the original repo as an "upstream" remote:
-  ```bash
-  git remote add upstream [https://github.com/](https://github.com/)<original-owner>/<repo-name>.git
-  ```
-- Now you have:
-  - `origin` → your fork (where you push)
-  - `upstream` → the main/original repo (where you pull updates)
+
+**Option A: You're starting fresh (no existing local copy of the repo)**
+
+If you don't have a local copy of the repository yet, follow these steps:
+
+1.  **Clone your fork to your machine:**
+    ```bash
+    git clone [https://github.com/](https://github.com/)<your-username>/<repo-name>.git
+    cd <repo-name>
+    ```
+    This creates a new folder named `<repo-name>` on your machine, which is a clone of your personal fork.
+
+2.  **Add the original repo as an "upstream" remote:**
+    ```bash
+    git remote add upstream [https://github.com/](https://github.com/)<original-owner>/<repo-name>.git
+    ```
+
+**Option B: You already have a local copy of the original repo**
+
+If you previously cloned the *original* repository (not your fork) and now want to use the forking workflow, follow these steps to reconfigure your existing local copy:
+
+1.  **Navigate to your existing local repository folder:**
+    ```bash
+    cd /path/to/your/existing-repo-folder
+    ```
+
+2.  **Verify your current remotes:**
+    ```bash
+    git remote -v
+    ```
+    You will likely see `origin` pointing to the original repository. We need to change this.
+
+3.  **Change your `origin` remote to point to your fork:**
+    ```bash
+    git remote set-url origin [https://github.com/](https://github.com/)<your-username>/<repo-name>.git
+    ```
+    This reconfigures your `origin` remote to be your personal fork.
+
+4.  **Add the original repo as an "upstream" remote:**
+    ```bash
+    git remote add upstream [https://github.com/](https://github.com/)<original-owner>/<repo-name>.git
+    ```
+    This creates a new remote named `upstream` that points to the original project.
+
+---
+
+**After either Option A or Option B, you should have:**
+
+- `origin` → your fork (where you push your work)
+- `upstream` → the main/original repo (where you pull updates)
+
+You can verify this with:
+```bash
+git remote -v
+```
+You should see entries for both `origin` (your fork's URL) and `upstream` (the original repo's URL).
 
 ---
 
