@@ -212,13 +212,54 @@ Once your feature is complete, thoroughly tested, and ready for your users, you'
 * **Step 6.2: Watch the Final Deployment**
     After merging, your CI/CD pipeline (configured to trigger on merges to `main`) will automatically deploy your changes to the production website. Monitor the CI/CD status to ensure a successful deployment.
 
-* **Step 6.3: Clean Up**
-    Once your feature is live and stable on production, you can clean up your repository by deleting the now-merged feature branch.
-    * On GitHub, after merging a PR, you'll typically see a "Delete branch" button. Click it.
-    * Optionally, delete the local branch as well:
+* **Step 6.3: Clean Up Your Branches**
+    Once your feature is live and stable on production, it's good practice to clean up both the remote branch on GitHub and your local copy. This keeps your repository tidy and your branch list manageable.
+
+    **Explanation:** When you delete a branch on GitHub (e.g., via the "Delete branch" button on a merged Pull Request), it's gone from the remote. However, your local Git repository still has its own copy of the branch, and it also retains "remote-tracking branches" (local references like `origin/your-branch-name`) that point to where the branch *used to be* on the remote. We need to clean up both of these.
+
+    1.  **Switch to `main` (or another active branch) locally:**
+        You cannot delete a branch that you are currently on. Before deleting your feature branch, switch to your `main` branch (or any other branch you plan to work on next).
+
+        ```bash
+        git checkout main
+        ```
+
+    2.  **Delete the Local Branch:**
+        This removes the copy of the feature branch from your local machine.
+
         ```bash
         git branch -d <your-branch-name>
         ```
+        * Use `-d` (lowercase) for a "safe" delete. Git will only delete the branch if it has been fully merged into its upstream (e.g., `main`) in your *local* repository.
+        * **Troubleshooting `error: the branch 'branch-name' is not fully merged`:** This often happens if your local `main` branch isn't fully up-to-date with the merge that happened on GitHub, or if the branch was merged using "Squash and Merge" / "Rebase and Merge" on GitHub (which creates new commits on `main` rather than directly incorporating the old ones).
+            * If you are **certain** the branch's changes are now in `main` on GitHub, you can force the local deletion using `-D` (uppercase):
+                ```bash
+                git branch -D <your-branch-name>
+                ```
+            * *(Optional: If you haven't recently, `git pull origin main` first might help `git branch -d` succeed by updating your local `main`'s history.)*
+
+        * **To delete multiple merged local branches at once (use with extreme caution!):**
+            ```bash
+            git branch --merged | grep -v "main" | xargs git branch -d
+            ```
+            This command lists all branches that have been merged into your current branch (likely `main`), excludes `main` itself, and then deletes the rest. Always double-check the output of `git branch --merged` *before* piping to `xargs` if you're unsure.
+
+    3.  **Delete the Remote Branch (if not already done via GitHub UI):**
+        If you didn't delete the branch on GitHub via the Pull Request interface after merging, you can delete it from your remote repository using the command line.
+
+        ```bash
+        git push origin --delete <your-branch-name>
+        ```
+        *An alternative, older syntax for the same command is: `git push origin :<your-branch-name>`*
+
+    4.  **Prune Stale Remote-Tracking Branches (to clean up your local Git client's view):**
+        Even after deleting the remote branch on GitHub and your local branch, your local Git repository might still retain a reference to the remote branch (e.g., `origin/feat/git-branch-names`). These are called "remote-tracking branches" and they won't automatically disappear. Pruning removes these stale references.
+
+        ```bash
+        git fetch --prune
+        ```
+        * This command fetches any new changes from the remote (`origin`) and simultaneously removes any remote-tracking branches that no longer exist on the `origin` remote.
+        * After running this, your local Git client's branch view (and `git branch -r` output) should reflect the actual state of your remote branches, with the deleted one gone.
 
 ---
 
