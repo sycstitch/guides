@@ -1,4 +1,4 @@
-# My Daily Development Workflow (Git + Docker + CI/CD + Forking)
+# My Fork Development Workflow (Git + Docker + CI/CD + Forking)
 
 This guide outlines the complete process from starting a new task to seeing it live on the production website. Forking lets you keep your work private (until you’re ready) and is the standard for contributing to public repos. You’ll work from your own copy, then PR into the main project.
 
