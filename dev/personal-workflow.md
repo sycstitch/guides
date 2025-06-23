@@ -31,7 +31,7 @@ Before writing any new code, it's crucial to prepare your local environment and 
 
 * **Step 1.1: Sync Your Local `main` Branch with Remote**
     Always start with the latest version of your project from GitHub. This is the most important step to prevent future merge conflicts by ensuring your local `main` branch is up-to-date.
-    
+
     **Understanding `git fetch` vs. `git pull`:**
     While `git pull` is a common command often used to update a local branch, it's actually a shorthand that combines `git fetch` (downloading remote changes to your local Git repository without modifying your working files) and `git merge` (integrating those changes into your current branch). We separate these steps in this workflow for greater clarity and control, allowing you to review what changes are available on the remote before integrating them into your local branch.
 
